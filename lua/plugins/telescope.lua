@@ -1,21 +1,22 @@
-local opts = { noremap = true, silent = true }
+local map = vim.api.nvim_set_keymap
+local cmd = vim.api.nvim_command
+local opts = {noremap = true, silent = true}
 
-require("telescope").setup({
-	defaults = {
-		path_display = { "shorten" },
-	},
-	extensions = {
-		project = {
-			base_dirs = {
-				{ "~/Projects", max_depth = 5 },
-			},
-		},
-	},
-})
+require('telescope').setup {
+  defaults = {
+    path_display = { 'shorten' },
+  },
+  extensions = {
+    project = {
+      base_dirs = {
+        {'~/Projects', max_depth = 5},
+      },
+    }
+  }
+}
 
 -- load extensions
-require("telescope").load_extension("project")
-require("telescope").load_extension("file_browser")
+require'telescope'.load_extension('project')
 
 -- telescope.lsp_workspace_symbols =  function()
 --   local input = vim.fn.input('Query: ')
@@ -27,50 +28,17 @@ require("telescope").load_extension("file_browser")
 --   }
 -- end
 
-vim.keymap.set("n", "<leader>e", function()
-	require("telescope.builtin").lsp_document_symbols()
-end, opts)
-vim.keymap.set("n", "<leader>w", function()
-	require("telescope.builtin").lsp_dynamic_workspace_symbols()
-end, opts)
-vim.keymap.set("n", "<leader><leader>", function()
-	require("telescope.builtin").keymaps()
-end, opts)
-vim.keymap.set("n", "<Leader>gt", function()
-	require("telescope.builtin").git_status()
-end, opts)
-vim.keymap.set("n", "<Leader>cm", function()
-	require("telescope.builtin").git_commits()
-end, opts)
-vim.keymap.set("n", "<Leader>ff", function()
-	require("telescope.builtin").find_files()
-end, opts)
-vim.keymap.set("n", "<Leader>fg", function()
-	require("telescope.builtin").live_grep()
-end, opts)
-vim.keymap.set("n", "<Leader>fb", function()
-	require("telescope.builtin").buffers()
-end, opts)
-vim.keymap.set("n", "<Leader>fh", function()
-	require("telescope.builtin").help_tags()
-end, opts)
-vim.keymap.set("n", "<Leader>fo", function()
-	require("telescope.builtin").oldfiles()
-end, opts)
-vim.keymap.set("n", "gr", function()
-	require("telescope.builtin").lsp_references()
-end, opts)
-vim.keymap.set("n", "gd", function()
-	require("telescope.builtin").lsp_definitions()
-end, opts)
-vim.keymap.set("n", "gi", function()
-	require("telescope.builtin").lsp_implementations()
-end, opts)
-
--- Extensions shortcut
-vim.keymap.set("n", "<C-p>", function()
-	require("telescope").extensions.project.project({})
-end, opts)
-vim.keymap.set("n", "<space>fb", function()
-	require("telescope").extensions.file_browser.file_browser()
-end, opts)
+map('n', '<C-p>', "<cmd>lua require('telescope').extensions.project.project{}<cr>", opts)
+map('n', '<leader>e', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", opts)
+map('n', '<leader>w', "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>", opts)
+map('n', '<leader><leader>', "<cmd>lua require('telescope.builtin').keymaps()<cr>", opts)
+map('n', '<Leader>gt', "<cmd>lua require('telescope.builtin').git_status()<cr>", opts)
+map('n', '<Leader>cm', "<cmd>lua require('telescope.builtin').git_commits()<cr>", opts)
+map('n', '<Leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>", opts)
+map('n', '<Leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>", opts)
+map('n', '<Leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>", opts)
+map('n', '<Leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
+map('n', '<Leader>fo', "<cmd>lua require('telescope.builtin').oldfiles()<cr>", opts)
+map('n', 'gr', "<cmd>lua require('telescope.builtin').lsp_references()<cr>", opts)
+-- map("n", "gd", "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", opts)
+map("n", "gi", "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>", opts)

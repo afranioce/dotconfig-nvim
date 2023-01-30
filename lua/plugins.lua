@@ -16,6 +16,16 @@ cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 -- Load Plugins
 return require("packer").startup(function()
 	-- Theme
+	-- use {
+	--   'dracula/vim',
+	--   config = function()
+	--     vim.cmd [[syntax on]]
+	--     vim.cmd [[set t_Co=256]]
+	--     -- vim.cmd [[set cursorline]]
+	--     vim.cmd [[colorscheme dracula]]
+	--   end,
+	-- }
+
 	use({
 		"catppuccin/nvim",
 		as = "catppuccin",
@@ -29,13 +39,15 @@ return require("packer").startup(function()
 					cmp = true,
 					telescope = true,
 					dashboard = true,
-					dap = {
-						enabled = true,
-						enable_ui = true,
-					},
+					mason = true,
+					nvimtree = true,
 					indent_blankline = {
 						enabled = true,
 						colored_indent_levels = false,
+					},
+					dap = {
+						enabled = true,
+						enable_ui = true,
 					},
 					native_lsp = {
 						enabled = true,
@@ -63,16 +75,6 @@ return require("packer").startup(function()
 			vim.cmd([[colorscheme catppuccin]])
 		end,
 	})
-
-	-- use {
-	--   'dracula/vim',
-	--   config = function()
-	--     vim.cmd [[syntax on]]
-	--     vim.cmd [[set t_Co=256]]
-	--     -- vim.cmd [[set cursorline]]
-	--     vim.cmd [[colorscheme dracula]]
-	--   end,
-	-- }
 
 	-- use {
 	--   'morhetz/gruvbox',
@@ -122,6 +124,11 @@ return require("packer").startup(function()
 	})
 
 	use({
+		"antoinemadec/FixCursorHold.nvim", --remove after close https://github.com/neovim/neovim/issues/12587
+		config = [[vim.g.cursorhold_updatetime = 700]],
+	})
+
+	use({
 		"onsails/lspkind.nvim",
 		config = [[require("lspkind").init()]],
 	})
@@ -159,7 +166,7 @@ return require("packer").startup(function()
 		requires = {
 			{ "mfussenegger/nvim-dap" },
 		},
-		config = [[require('plugins.nvim-dap-ui')]],
+		config = [[require('dapui').setup()]],
 	})
 
 	use({
@@ -167,7 +174,7 @@ return require("packer").startup(function()
 		requires = {
 			{ "nvim-lua/plenary.nvim" },
 		},
-		config = [[require('plugins.gitsigns-nvim')]],
+		config = [[require('gitsigns').setup({current_line_blame = true,})]],
 	})
 
 	use({
@@ -180,8 +187,25 @@ return require("packer").startup(function()
 	})
 
 	use({
+		"glepnir/dbsession.nvim",
+		event = "BufRead",
+		config = function()
+			require("dbsession").setup({})
+		end,
+	})
+
+	use({
 		"glepnir/dashboard-nvim",
+		event = "VimEnter",
+		requires = {
+			{ "nvim-tree/nvim-web-devicons" },
+		},
 		config = [[require('plugins/dashboard-nvim')]],
+	})
+
+	use({
+		"neovim/nvim-lspconfig",
+		config = [[require('plugins.nvim-lspconfig')]],
 	})
 
 	use({
@@ -190,11 +214,6 @@ return require("packer").startup(function()
 			"williamboman/mason.nvim",
 		},
 		config = [[require('plugins.mason-lspconfig')]],
-	})
-
-	use({
-		"neovim/nvim-lspconfig",
-		-- config = [[require('plugins.nvim-lspconfig')]],
 	})
 
 	use({
@@ -221,6 +240,7 @@ return require("packer").startup(function()
 			{ "hrsh7th/cmp-nvim-lsp-signature-help" },
 			{ "kristijanhusak/vim-dadbod-completion" },
 			{ "quangnguyen30192/cmp-nvim-ultisnips" },
+			{ "windwp/nvim-autopairs" },
 		},
 		config = [[require('plugins.nvim-cmp')]],
 	})
@@ -244,7 +264,6 @@ return require("packer").startup(function()
 		requires = {
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-project.nvim" },
-			{ "nvim-telescope/telescope-file-browser.nvim" },
 		},
 		config = [[require('plugins.telescope')]],
 	})
@@ -272,30 +291,4 @@ return require("packer").startup(function()
 		},
 		config = [[require('plugins.nvim-tree')]],
 	})
-
-	use({
-		"rmagatti/auto-session",
-		config = function()
-      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-			require("auto-session").setup({
-				log_level = "error",
-				auto_session_suppress_dirs = { "~/Projects" },
-			})
-		end,
-	})
-
-  use({
-    'kevinhwang91/nvim-ufo',
-    requires = 'kevinhwang91/promise-async',
-    config = [[require('plugins.nvim-ufo')]],
-  })
-
-  use({
-    "folke/todo-comments.nvim",
-    requires = {
-      "nvim-lua/plenary.nvim"
-    },
-    config = [[require('plugins.todo-comments')]],
-  })
 end)
