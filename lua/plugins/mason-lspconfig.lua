@@ -18,6 +18,7 @@ mason_lspconfig.setup({
 		"eslint",
 		"angularls",
 		"zk",
+		"pylsp",
 	},
 })
 
@@ -50,7 +51,6 @@ vim.api.nvim_create_autocmd("User", {
 		vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
 		vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
 		vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
-		vim.keymap.set("x", "<space>ca", vim.lsp.buf.range_code_action, opts)
 		-- vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
 		vim.keymap.set("n", "gr", function()
 			telescope_builtin.lsp_references()
@@ -61,11 +61,12 @@ vim.api.nvim_create_autocmd("User", {
 		vim.keymap.set("n", "gw", function()
 			telescope_builtin.lsp_workspace_symbols()
 		end, opts)
-		vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, opts)
+		vim.keymap.set("n", "<space>f", vim.lsp.buf.format, opts)
 	end,
 })
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.foldingRange = {
 	dynamicRegistration = false,
@@ -100,7 +101,7 @@ local lsp_defaults = {
 			})
 		end
 
-    -- TODO: remove when mason to implement helm_ls
+		-- TODO: remove when mason to implement helm_ls
 		if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "gotmpl" then
 			vim.diagnostic.disable()
 		end

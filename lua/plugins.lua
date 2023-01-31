@@ -133,6 +133,8 @@ return require("packer").startup(function()
 		config = [[require('plugins.comment')]],
 	})
 
+    use("nvim-lua/lsp-status.nvim")
+
 	use({
 		"mfussenegger/nvim-dap",
 		config = [[require('plugins.nvim-dap')]],
@@ -268,7 +270,7 @@ return require("packer").startup(function()
 		"hoob3rt/lualine.nvim",
 		requires = {
 			{ "kyazdani42/nvim-web-devicons" },
-			{ "arkav/lualine-lsp-progress" },
+			{ "nvim-lua/lsp-status.nvim" },
 		},
 		config = [[require('plugins.lualine')]],
 	})
