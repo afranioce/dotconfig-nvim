@@ -1,5 +1,12 @@
 local lspconfig = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
+local lsp_status = require("lsp-status")
+
+lsp_status.config({
+	diagnostics = false,
+	current_function = false,
+	status_symbol = "",
+})
 
 require("mason").setup()
 mason_lspconfig.setup({
@@ -65,7 +72,11 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
+-- Register the progress handler
+lsp_status.register_progress()
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = vim.tbl_extend("keep", capabilities, lsp_status.capabilities)
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.foldingRange = {
@@ -73,12 +84,31 @@ capabilities.textDocument.foldingRange = {
 	lineFoldingOnly = true,
 }
 
+-- LSP settings (for overriding per client)
+local handlers = {
+	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
+	["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+		virtual_text = {
+			prefix = "",
+			spacing = 0,
+		},
+		signs = true,
+		underline = true,
+		-- set this to true if you want diagnostics to show in insert mode
+		update_in_insert = false,
+	}),
+}
+
 local lsp_defaults = {
 	flags = {
 		debounce_text_changes = 150,
 	},
 	capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities),
+    handlers = handlers,
 	on_attach = function(client, bufnr)
+        lsp_status.on_attach(client)
+
 		-- Enable completion triggered by <c-x><c-o>
 		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -100,6 +130,22 @@ local lsp_defaults = {
 				desc = "Clear All the References",
 			})
 		end
+
+        vim.api.nvim_create_autocmd("CursorHold", {
+            buffer = bufnr,
+            callback = function()
+                local opts = {
+                    focusable = false,
+                    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+                    border = "rounded",
+                    source = "always",
+                    prefix = " ",
+                    scope = "cursor",
+                }
+                vim.diagnostic.open_float(nil, opts)
+            end,
+        })
+
 
 		-- TODO: remove when mason to implement helm_ls
 		if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "gotmpl" then

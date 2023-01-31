@@ -117,6 +117,7 @@ return require("packer").startup(function()
 	use("justinmk/vim-sneak")
 	use("kyazdani42/nvim-web-devicons")
 	use("editorconfig/editorconfig-vim")
+	use("neovim/nvim-lspconfig")
 
 	use({
 		"akinsho/toggleterm.nvim",
@@ -198,11 +199,6 @@ return require("packer").startup(function()
 			{ "nvim-tree/nvim-web-devicons" },
 		},
 		config = [[require('plugins/dashboard-nvim')]],
-	})
-
-	use({
-		"neovim/nvim-lspconfig",
-		config = [[require('plugins.nvim-lspconfig')]],
 	})
 
 	use({
