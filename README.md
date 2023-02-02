@@ -4,6 +4,7 @@ It's a bootstrap configuration for [neovim](https://neovim.io/)
 
 ![image](https://user-images.githubusercontent.com/893768/216389210-0b091084-0015-4d38-b774-f4a0d22207be.png)
 ![image](https://user-images.githubusercontent.com/893768/216389704-64fbc07a-8181-4e7c-99ab-4e2b89728fc6.png)
+![image](https://user-images.githubusercontent.com/893768/216390155-bee40fa3-5a28-4ff5-ba98-23022bfbdd12.png)
 
 
 ## Pre-requisites
