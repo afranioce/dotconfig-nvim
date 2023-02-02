@@ -26,6 +26,7 @@ mason_lspconfig.setup({
 		"angularls",
 		"zk",
 		"pylsp",
+        "dockerls",
 	},
 })
 
