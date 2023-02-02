@@ -105,9 +105,9 @@ local lsp_defaults = {
 		debounce_text_changes = 150,
 	},
 	capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities),
-    handlers = handlers,
+	handlers = handlers,
 	on_attach = function(client, bufnr)
-        lsp_status.on_attach(client)
+		lsp_status.on_attach(client)
 
 		-- Enable completion triggered by <c-x><c-o>
 		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -115,37 +115,36 @@ local lsp_defaults = {
 		vim.api.nvim_exec_autocmds("User", { pattern = "LspAttached" })
 
 		if client.server_capabilities.documentHighlightProvider then
-			vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
-			vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "lsp_document_highlight" })
+			vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
+			vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocumentHighlight" })
 			vim.api.nvim_create_autocmd("CursorHold", {
 				callback = vim.lsp.buf.document_highlight,
 				buffer = bufnr,
-				group = "lsp_document_highlight",
+				group = "LspDocumentHighlight",
 				desc = "Document Highlight",
 			})
 			vim.api.nvim_create_autocmd("CursorMoved", {
 				callback = vim.lsp.buf.clear_references,
 				buffer = bufnr,
-				group = "lsp_document_highlight",
+				group = "LspDocumentHighlight",
 				desc = "Clear All the References",
 			})
 		end
 
-        vim.api.nvim_create_autocmd("CursorHold", {
-            buffer = bufnr,
-            callback = function()
-                local opts = {
-                    focusable = false,
-                    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-                    border = "rounded",
-                    source = "always",
-                    prefix = " ",
-                    scope = "cursor",
-                }
-                vim.diagnostic.open_float(nil, opts)
-            end,
-        })
-
+		vim.api.nvim_create_autocmd("CursorHold", {
+			buffer = bufnr,
+			callback = function()
+				local opts = {
+					focusable = false,
+					close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+					border = "rounded",
+					source = "always",
+					prefix = " ",
+					scope = "cursor",
+				}
+				vim.diagnostic.open_float(nil, opts)
+			end,
+		})
 
 		-- TODO: remove when mason to implement helm_ls
 		if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "gotmpl" then
@@ -153,11 +152,11 @@ local lsp_defaults = {
 		end
 
 		if client.server_capabilities.codeLensProvider then
-			vim.api.nvim_create_augroup("lsp_codelens", { clear = true })
+			vim.api.nvim_create_augroup("LspCodeLens", { clear = true })
 			vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave" }, {
 				callback = vim.lsp.codelens.refresh,
 				buffer = bufnr,
-				group = "lsp_codelens",
+				group = "LspCodeLens",
 				desc = "Code Lens",
 			})
 		end

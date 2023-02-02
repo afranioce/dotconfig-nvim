@@ -15,7 +15,7 @@ cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 
 -- Load Plugins
 return require("packer").startup(function()
-	-- Theme
+	-- Themes
 	use({
 		"catppuccin/nvim",
 		as = "catppuccin",
@@ -134,7 +134,7 @@ return require("packer").startup(function()
 		config = [[require('plugins.comment')]],
 	})
 
-    use("nvim-lua/lsp-status.nvim")
+	use("nvim-lua/lsp-status.nvim")
 
 	use({
 		"mfussenegger/nvim-dap",
@@ -258,6 +258,7 @@ return require("packer").startup(function()
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-project.nvim" },
 			{ "nvim-telescope/telescope-file-browser.nvim" },
+			{ "kdheepak/lazygit.nvim" },
 		},
 		config = [[require('plugins.telescope')]],
 	})
@@ -289,7 +290,7 @@ return require("packer").startup(function()
 	use({
 		"rmagatti/auto-session",
 		config = function()
-      vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+			vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 			require("auto-session").setup({
 				log_level = "error",
@@ -298,17 +299,17 @@ return require("packer").startup(function()
 		end,
 	})
 
-  use({
-    'kevinhwang91/nvim-ufo',
-    requires = 'kevinhwang91/promise-async',
-    config = [[require('plugins.nvim-ufo')]],
-  })
+	use({
+		"kevinhwang91/nvim-ufo",
+		requires = "kevinhwang91/promise-async",
+		config = [[require('plugins.nvim-ufo')]],
+	})
 
-  use({
-    "folke/todo-comments.nvim",
-    requires = {
-      "nvim-lua/plenary.nvim"
-    },
-    config = [[require('plugins.todo-comments')]],
-  })
+	use({
+		"folke/todo-comments.nvim",
+		requires = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = [[require('plugins.todo-comments')]],
+	})
 end)

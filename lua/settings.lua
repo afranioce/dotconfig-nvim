@@ -11,8 +11,6 @@ local lsp = vim.lsp
 local cmd = vim.cmd
 local nvim_cmd = vim.api.nvim_command
 
-local in_wsl = os.getenv('WSL_DISTRO_NAME') ~= nil
-
 vim.g.mapleader = ','
 
 -- o.foldtext = [[v:lua.string.format("  %s: %d lines", v:lua.vim.fn.getline(v:lua.vim.v.foldstart), v:lua.vim.v.foldend - v:lua.vim.v.foldstart + 1)]]
