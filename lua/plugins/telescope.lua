@@ -2,23 +2,23 @@ local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
 
 telescope.setup({
-	defaults = {
-		path_display = { "shorten" },
-	},
-	extensions = {
-		project = {
-			base_dirs = {
-				{ "~/Projects", max_depth = 5 },
-			},
-		},
-	},
+    defaults = {
+        path_display = { "shorten" },
+    },
+    extensions = {
+        project = {
+            base_dirs = {
+                { "~/Projects", max_depth = 5 },
+            },
+        },
+    },
 })
 
 vim.api.nvim_create_augroup("LazygitProjectRootDir", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
-	callback = require("lazygit.utils").project_root_dir,
-	group = "LazygitProjectRootDir",
-	desc = "Lazygit Project Root Dir",
+    callback = require("lazygit.utils").project_root_dir,
+    group = "LazygitProjectRootDir",
+    desc = "Lazygit Project Root Dir",
 })
 
 -- Load extensions
@@ -38,45 +38,45 @@ telescope.load_extension("lazygit")
 local opts = { noremap = true, silent = true }
 
 vim.keymap.set("n", "<C-p>", function()
-	telescope.extensions.project.project()
+    telescope.extensions.project.project()
 end, opts)
 vim.keymap.set("n", "<leader>lg", function()
-	telescope.extensions.lazygit.lazygit()
+    telescope.extensions.lazygit.lazygit()
 end, opts)
 vim.keymap.set("n", "<leader>e", function()
-	telescope_builtin.lsp_document_symbols()
+    telescope_builtin.lsp_document_symbols()
 end, opts)
 vim.keymap.set("n", "<leader>w", function()
-	telescope_builtin.lsp_dynamic_workspace_symbols()
+    telescope_builtin.lsp_dynamic_workspace_symbols()
 end, opts)
 vim.keymap.set("n", "<leader><leader>", function()
-	telescope_builtin.keymaps()
+    telescope_builtin.keymaps()
 end, opts)
 vim.keymap.set("n", "<Leader>gt", function()
-	telescope_builtin.git_status()
+    telescope_builtin.git_status()
 end, opts)
 vim.keymap.set("n", "<Leader>cm", function()
-	telescope_builtin.git_commits()
+    telescope_builtin.git_commits()
 end, opts)
 vim.keymap.set("n", "<Leader>ff", function()
-	telescope_builtin.find_files()
+    telescope_builtin.find_files()
 end, opts)
 vim.keymap.set("n", "<Leader>fg", function()
-	telescope_builtin.live_grep()
+    telescope_builtin.live_grep()
 end, opts)
 vim.keymap.set("n", "<Leader>fb", function()
-	telescope_builtin.buffers()
+    telescope_builtin.buffers()
 end, opts)
 vim.keymap.set("n", "<Leader>fh", function()
-	telescope_builtin.help_tags()
+    telescope_builtin.help_tags()
 end, opts)
 vim.keymap.set("n", "<Leader>fo", function()
-	telescope_builtin.oldfiles()
+    telescope_builtin.oldfiles()
 end, opts)
 vim.keymap.set("n", "gr", function()
-	telescope_builtin.lsp_references()
+    telescope_builtin.lsp_references()
 end, opts)
 -- vim.keymap.set("n", "gd", function() telescope_builtin.lsp_definitions() end, opts)
 vim.keymap.set("n", "gi", function()
-	telescope_builtin.lsp_implementations()
+    telescope_builtin.lsp_implementations()
 end, opts)
