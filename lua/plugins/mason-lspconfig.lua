@@ -16,7 +16,7 @@ mason_lspconfig.setup({
 		"jsonls",
 		"yamlls",
 		"vimls",
-		"sumneko_lua",
+		"lua_ls",
 		"phpactor",
 		"tsserver",
 		"cmake",
@@ -169,26 +169,5 @@ lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.defa
 mason_lspconfig.setup_handlers({
 	function(server_name) -- default handler (optional)
 		lspconfig[server_name].setup({})
-	end,
-
-	-- override default handler (optional)
-	["sumneko_lua"] = function()
-		lspconfig.sumneko_lua.setup({
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						-- Make the server aware of Neovim runtime files
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-						},
-					},
-					telemetry = { enable = false },
-				},
-			},
-		})
 	end,
 })
