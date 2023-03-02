@@ -53,6 +53,7 @@ require("nvim-tree").setup({
 local function open_nvim_tree(data)
     local IGNORED_FT = {
         "dashboard",
+        "gitcommit",
     }
 
     -- buffer is a real file on the disk
