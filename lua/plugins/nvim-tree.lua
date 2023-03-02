@@ -30,18 +30,18 @@ require("nvim-tree").setup({
     },
     renderer = {
         highlight_opened_files = "name",
-        indent_markers         = {
+        indent_markers = {
             enable = true,
         },
         icons = {
-          show = {
-            file = true,
-            folder = true,
-            folder_arrow = false,
-            git = true,
-            modified = true,
-          },
-        }
+            show = {
+                file = true,
+                folder = true,
+                folder_arrow = false,
+                git = true,
+                modified = true,
+            },
+        },
     },
     actions = {
         open_file = {
