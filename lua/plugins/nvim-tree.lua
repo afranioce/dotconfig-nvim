@@ -1,3 +1,25 @@
+local utils = require "nvim-tree.utils"
+local core = require "nvim-tree.core"
+
+local function live_grep_in(node)
+    if not node then
+        return
+    end
+
+    local absolute_path = node.absolute_path
+    local relative_path = utils.path_relative(absolute_path, core.get_cwd())
+
+    local path = absolute_path
+    if node.type ~= "directory" and node.parent then
+        path = node.parent.absolute_path
+    end
+
+    require("telescope.builtin").live_grep({
+        search_dirs = { path },
+        prompt_title = string.format("Live Grep in [%s]", relative_path),
+    })
+end
+
 require("nvim-tree").setup({
     update_cwd = true,
     update_focused_file = {
@@ -11,13 +33,18 @@ require("nvim-tree").setup({
         enable = true,
         ignore = true,
     },
-    open_on_setup = false, -- TODO: Deprecated setup should be removed in the future
-    open_on_setup_file = false, -- TODO: Deprecated setup should be removed in the future
+    open_on_setup = false,          -- TODO: Deprecated setup should be removed in the future
+    open_on_setup_file = false,     -- TODO: Deprecated setup should be removed in the future
     ignore_buffer_on_setup = false, -- TODO: Deprecated setup should be removed in the future
-    ignore_ft_on_setup = {}, -- TODO: Deprecated setup should be removed in the future
+    ignore_ft_on_setup = {},        -- TODO: Deprecated setup should be removed in the future
     view = {
         side = "left",
         width = 60,
+        mappings = {
+            list = {
+                { key = '<C-f>', action = '', action_cb = live_grep_in, mode = 'n' },
+            },
+        },
     },
     filters = {
         dotfiles = true,
