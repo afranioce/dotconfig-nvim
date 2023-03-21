@@ -312,4 +312,11 @@ return require("packer").startup(function()
 		},
 		config = [[require('plugins.todo-comments')]],
 	})
+
+    use({
+        "tiagovla/scope.nvim",
+        config = function()
+            require("scope").setup()
+        end,
+    })
 end)
