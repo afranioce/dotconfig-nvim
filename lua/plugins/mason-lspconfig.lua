@@ -20,7 +20,7 @@ mason_lspconfig.setup({
         "phpactor",
         "tsserver",
         "cmake",
-        "sqls",
+        "sqlls",
         "gopls",
         "eslint",
         "angularls",
