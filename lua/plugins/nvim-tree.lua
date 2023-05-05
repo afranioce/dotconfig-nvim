@@ -1,5 +1,5 @@
-local utils = require "nvim-tree.utils"
-local core = require "nvim-tree.core"
+local utils = require("nvim-tree.utils")
+local core = require("nvim-tree.core")
 
 local function live_grep_in(node)
     if not node then
@@ -20,7 +20,23 @@ local function live_grep_in(node)
     })
 end
 
+local function on_attach(bufnr)
+    local api = require("nvim-tree.api")
+
+    local function opts(desc)
+        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    api.config.mappings.default_on_attach(bufnr)
+
+    vim.keymap.set("n", "<C-f>", function()
+        local node = api.tree.get_node_under_cursor()
+        live_grep_in(node)
+    end, opts("Live Grep in Node Path"))
+end
+
 require("nvim-tree").setup({
+    on_attach = on_attach,
     update_cwd = true,
     update_focused_file = {
         enable = true,
@@ -33,18 +49,9 @@ require("nvim-tree").setup({
         enable = true,
         ignore = true,
     },
-    open_on_setup = false,          -- TODO: Deprecated setup should be removed in the future
-    open_on_setup_file = false,     -- TODO: Deprecated setup should be removed in the future
-    ignore_buffer_on_setup = false, -- TODO: Deprecated setup should be removed in the future
-    ignore_ft_on_setup = {},        -- TODO: Deprecated setup should be removed in the future
     view = {
         side = "left",
         width = 60,
-        mappings = {
-            list = {
-                { key = '<C-f>', action = '', action_cb = live_grep_in, mode = 'n' },
-            },
-        },
     },
     filters = {
         dotfiles = true,
