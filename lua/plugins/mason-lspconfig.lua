@@ -147,11 +147,6 @@ local lsp_defaults = {
             end,
         })
 
-        -- TODO: remove when mason to implement helm_ls
-        if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "gotmpl" then
-            vim.diagnostic.disable()
-        end
-
         if client.server_capabilities.codeLensProvider then
             vim.api.nvim_create_augroup("LspCodeLens", { clear = true })
             vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave" }, {
