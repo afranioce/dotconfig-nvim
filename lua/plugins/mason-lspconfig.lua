@@ -11,22 +11,24 @@ lsp_status.config({
 require("mason").setup()
 mason_lspconfig.setup({
     ensure_installed = {
-        "bashls",
-        "omnisharp",
-        "jsonls",
-        "yamlls",
-        "vimls",
-        "lua_ls",
-        "phpactor",
-        "tsserver",
-        "cmake",
-        "sqlls",
-        "gopls",
-        "eslint",
         "angularls",
-        "zk",
-        "pylsp",
+        "azure_pipelines_ls",
+        "bashls",
+        "cmake",
         "dockerls",
+        "eslint",
+        "gopls",
+        "jsonls",
+        "lua_ls",
+        "omnisharp",
+        "yamlls",
+        "tsserver",
+        "phpactor",
+        "powershell_es",
+        "pylsp",
+        "sqlls",
+        "vimls",
+        "zk",
     },
 })
 
@@ -116,19 +118,26 @@ local lsp_defaults = {
         vim.api.nvim_exec_autocmds("User", { pattern = "LspAttached" })
 
         if client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
-            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspDocumentHighlight" })
-            vim.api.nvim_create_autocmd("CursorHold", {
-                callback = vim.lsp.buf.document_highlight,
-                buffer = bufnr,
-                group = "LspDocumentHighlight",
-                desc = "Document Highlight",
+            vim.api.nvim_create_augroup("LspDocumentHighlight", {
+                clear = false,
             })
-            vim.api.nvim_create_autocmd("CursorMoved", {
-                callback = vim.lsp.buf.clear_references,
+            vim.api.nvim_clear_autocmds({
                 buffer = bufnr,
                 group = "LspDocumentHighlight",
-                desc = "Clear All the References",
+            })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                group = "LspDocumentHighlight",
+                buffer = bufnr,
+                callback = function()
+                    vim.lsp.buf.document_highlight()
+                end,
+            })
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                group = "LspDocumentHighlight",
+                buffer = bufnr,
+                callback = function()
+                    vim.lsp.buf.clear_references()
+                end,
             })
         end
 
@@ -242,5 +251,42 @@ lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.defa
 mason_lspconfig.setup_handlers({
     function(server_name) -- default handler (optional)
         lspconfig[server_name].setup({})
+    end,
+    ["lua_ls"] = function()
+        local runtime_path = vim.split(package.path, ";")
+        table.insert(runtime_path, "lua/?.lua")
+        table.insert(runtime_path, "lua/?/init.lua")
+
+        lspconfig.lua_ls.setup({
+            settings = {
+                Lua = {
+                    runtime = {
+                        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                        version = "LuaJIT",
+                        -- Setup your lua path
+                        path = runtime_path,
+                    },
+                    diagnostics = {
+                        -- Get the language server to recognize the `vim` global
+                        -- Now, you don't get error/warning "Undefined global `vim`".
+                        globals = { "vim" },
+                    },
+                    workspace = {
+                        -- Make the server aware of Neovim runtime files
+                        library = vim.api.nvim_get_runtime_file("", true),
+                    },
+                    -- By default, lua-language-server sends anonymized data to its developers. Stop it using the following.
+                    telemetry = {
+                        enable = false,
+                    },
+                },
+            },
+        })
+    end,
+    -- Install pwsh https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3
+    ["powershell_es"] = function()
+        lspconfig.powershell_es.setup({
+            shell = "pwsh.exe",
+        })
     end,
 })

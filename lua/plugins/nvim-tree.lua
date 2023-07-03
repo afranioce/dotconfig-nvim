@@ -84,36 +84,14 @@ require("nvim-tree").setup({
     },
 })
 
-local function open_nvim_tree(data)
-    local IGNORED_FT = {
-        "dashboard",
-        "gitcommit",
-    }
-
-    -- buffer is a real file on the disk
-    local is_real_file = vim.fn.filereadable(data.file) == 1
-
-    -- buffer is a [No Name]
-    local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
-
-    -- &ft
-    local filetype = vim.bo[data.buf].ft
-
-    -- only files please
-    if not is_real_file and not no_name then
-        return
-    end
-
-    -- skip ignored filetypes
-    if vim.tbl_contains(IGNORED_FT, filetype) then
-        return
-    end
-
-    -- open the tree but don't focus it
-    require("nvim-tree.api").tree.toggle({ focus = false })
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+vim.api.nvim_create_autocmd("BufEnter", {
+    nested = true,
+    callback = function()
+        if #vim.api.nvim_list_wins() == 1 and require("nvim-tree.utils").is_nvim_tree_buf() then
+            vim.cmd("quit")
+        end
+    end,
+})
 
 local opts = { noremap = true, silent = false }
 

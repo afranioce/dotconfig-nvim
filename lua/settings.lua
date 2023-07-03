@@ -3,15 +3,10 @@
 -- :h defaults
 --
 local o = vim.opt -- Global Options
-local wo = vim.wo -- Window Options
-local bo = vim.bo -- Buffer Options
-local fn = vim.fn
-local v = vim.v
-local lsp = vim.lsp
 local cmd = vim.cmd
 local nvim_cmd = vim.api.nvim_command
 
-vim.g.mapleader = ','
+vim.g.mapleader = ","
 
 -- o.foldtext = [[v:lua.string.format("  %s: %d lines", v:lua.vim.fn.getline(v:lua.vim.v.foldstart), v:lua.vim.v.foldend - v:lua.vim.v.foldstart + 1)]]
 -- Folding settings
@@ -35,16 +30,16 @@ o.expandtab = true -- Converts tabs into spaces
 o.autoindent = true -- Reproduce the indentation of the previous line
 o.smartindent = true -- try to be smart (increase the indenting level after '{', decrease it after '}', and so on)
 
-cmd [[filetype plugin indent on]]
+cmd([[filetype plugin indent on]])
 
 o.hidden = true -- current buffer can be put into background
-o.colorcolumn = '120' -- Display line at column width 120
-o.number = true  -- Display signs in number column
+o.colorcolumn = "120" -- Display line at column width 120
+o.number = true -- Display signs in number column
 -- o.cursorline = true -- Highlight the line under the cursor
-o.mouse = 'a' -- Mouse support
-o.spelllang = 'en_us' -- Spell check
-o.spelloptions = 'camel'
-o.clipboard = 'unnamedplus'
+o.mouse = "a" -- Mouse support
+o.spelllang = "en_us" -- Spell check
+o.spelloptions = "camel"
+o.clipboard = "unnamedplus"
 
 -- Searching
 o.hlsearch = true
@@ -52,15 +47,32 @@ o.incsearch = true
 o.ignorecase = true
 o.smartcase = true
 
-o.guifont = 'UbuntuMono Nerd Font 11'
+o.guifont = "UbuntuMono Nerd Font 11"
 -- File encoding
-o.encoding = 'utf-8'
-o.fileencoding = 'utf-8'
-o.fileencodings = 'utf-8'
+o.encoding = "utf-8"
+o.fileencoding = "utf-8"
+o.fileencodings = "utf-8"
 
 -- cmd [[hi vertsplit guifg=fg guibg=bg]]
-nvim_cmd [[command! Term :bot sp | term]] -- terminal split, at the bottom of the screen
-nvim_cmd [[command! Te :Term]] -- Term short key
-nvim_cmd [[autocmd TermOpen term://* startinsert]] -- automatically start insert mode when I open new terminal
-nvim_cmd [[hi Normal guibg=none ctermbg=none]]
-nvim_cmd [[hi NonText guibg=none ctermbg=none]]
+nvim_cmd([[command! Term :bot sp | term]]) -- terminal split, at the bottom of the screen
+nvim_cmd([[command! Te :Term]]) -- Term short key
+nvim_cmd([[autocmd TermOpen term://* startinsert]]) -- automatically start insert mode when I open new terminal
+nvim_cmd([[hi Normal guibg=none ctermbg=none]])
+nvim_cmd([[hi NonText guibg=none ctermbg=none]])
+
+local is_wsl = os.getenv("WSL_DISTRO_NAME") ~= nil
+
+if is_wsl then
+    vim.g.clipboard = {
+        name = "WslClipboard",
+        copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+        },
+        paste = {
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        },
+        cache_enabled = false,
+    }
+end

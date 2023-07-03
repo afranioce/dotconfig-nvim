@@ -1,10 +1,10 @@
 local map = vim.api.nvim_set_keymap
-local opts = {noremap = true, silent = true}
+local opts = { noremap = true, silent = true }
 
 -- Copy file paths
-map('n', 'cp', ':let @+=expand("%")<CR>', opts) -- relative path
-map('n', 'cP', ':let @+=expand("%:p")<CR>', opts) -- absolute path
-map('n', 'cf', ':let @+=expand("%:t")<CR>', opts) -- filename
+map("n", "cp", ':let @+=expand("%")<CR>', opts) -- relative path
+map("n", "cP", ':let @+=expand("%:p")<CR>', opts) -- absolute path
+map("n", "cf", ':let @+=expand("%:t")<CR>', opts) -- filename
 
 -- Switching windows alt + hjkl
 map("n", "<A-h>", "<C-w>h", opts)
@@ -13,14 +13,14 @@ map("n", "<A-k>", "<C-w>k", opts)
 map("n", "<A-l>", "<C-w>l", opts)
 
 -- Close buffer
-map('n', '<leader>c', ':bp<bar>sp<bar>bn<bar>bd<CR>', opts)
-map('n', '<leader>C', ':bp<bar>sp<bar>bn<bar>bd!<CR>', opts) -- Force close
+map("n", "<leader>c", ":bp<bar>sp<bar>bn<bar>bd<CR>", opts)
+map("n", "<leader>C", ":bp<bar>sp<bar>bn<bar>bd!<CR>", opts) -- Force close
 
 -- Clean search (highlight)
-map('n', '<leader><space>', ':noh<CR>', opts)
+map("n", "<leader><space>", ":noh<CR>", opts)
 
 -- Save buffer
-map('n', '<C-s>', ':w<CR>', opts)
+map("n", "<C-s>", ":w<CR>", opts)
 
 -- Split screen
 map("n", "s", "", opts)
@@ -44,13 +44,13 @@ map("n", "<C-Up>", ":resize -2<CR>", opts)
 map("n", "s=", "<C-w>=", opts) -- Equal proportion
 
 -- Spell check toggle
-map('n', '<leader>sc', ':set spell!<CR>', opts)
+map("n", "<leader>sc", ":set spell!<CR>", opts)
 
 -- maintain Visual Mode after shifting > and <
-map('n', '<', '<<', opts)
-map('n', '>', '>>', opts)
-map('v', '<', '<gv', opts)
-map('v', '>', '>gv', opts)
+map("n", "<", "<<", opts)
+map("n", ">", ">>", opts)
+map("v", "<", "<gv", opts)
+map("v", ">", ">gv", opts)
 
 -- Move selected text up and down
 map("v", "J", ":move '>+1<CR>gv-gv", opts)
