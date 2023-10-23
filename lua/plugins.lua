@@ -19,51 +19,7 @@ return require("packer").startup(function(use)
     use({
         "catppuccin/nvim",
         as = "catppuccin",
-        config = function()
-            vim.g.catppuccin_flavour = "macchiato"
-
-            require("catppuccin").setup({
-                transparent_background = false,
-                integrations = {
-                    treesitter = true,
-                    cmp = true,
-                    telescope = true,
-                    dashboard = true,
-                    mason = true,
-                    nvimtree = true,
-                    indent_blankline = {
-                        enabled = true,
-                        colored_indent_levels = false,
-                    },
-                    dap = {
-                        enabled = true,
-                        enable_ui = true,
-                    },
-                    native_lsp = {
-                        enabled = true,
-                        virtual_text = {
-                            errors = { "italic" },
-                            hints = { "italic" },
-                            warnings = { "italic" },
-                            information = { "italic" },
-                        },
-                        underlines = {
-                            errors = { "underline" },
-                            hints = { "underline" },
-                            warnings = { "underline" },
-                            information = { "underline" },
-                        },
-                    },
-                    bufferline = {
-                        enabled = true,
-                        italics = true,
-                        bolds = true,
-                    },
-                },
-            })
-            vim.cmd([[set cursorline]])
-            vim.cmd([[colorscheme catppuccin]])
-        end,
+        config = [[require('themes.catppuccin')]],
     })
 
     -- use {
@@ -116,9 +72,13 @@ return require("packer").startup(function(use)
 
     use("justinmk/vim-sneak")
     use("kyazdani42/nvim-web-devicons")
-    use("editorconfig/editorconfig-vim")
     use("neovim/nvim-lspconfig")
     use("sindrets/diffview.nvim")
+
+    use({
+        "chentoast/marks.nvim",
+        config = [[require('marks').setup()]],
+    })
 
     use({
         "akinsho/toggleterm.nvim",
@@ -205,14 +165,15 @@ return require("packer").startup(function(use)
     use({
         "williamboman/mason-lspconfig.nvim",
         requires = {
-            "williamboman/mason.nvim",
+            { "williamboman/mason.nvim" },
+            { "b0o/schemastore.nvim" },
         },
         config = [[require('plugins.mason-lspconfig')]],
     })
 
     use({
-        "jose-elias-alvarez/null-ls.nvim",
-        config = [[require('plugins.null-ls')]],
+        "nvimtools/none-ls.nvim",
+        config = [[require('plugins.none-ls')]],
     })
 
     use({
@@ -255,7 +216,7 @@ return require("packer").startup(function(use)
 
     use({
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.2",
+        tag = "0.1.3",
         requires = {
             { "nvim-lua/plenary.nvim" },
             { "nvim-telescope/telescope-project.nvim" },
@@ -278,6 +239,13 @@ return require("packer").startup(function(use)
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
         config = [[require('plugins.nvim-treesitter')]],
+    })
+
+    use({
+        "nvim-treesitter/nvim-treesitter-context",
+        after = "nvim-treesitter",
+        requires = "nvim-treesitter/nvim-treesitter",
+        config = [[require('treesitter-context').setup()]],
     })
 
     use({

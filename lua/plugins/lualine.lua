@@ -28,7 +28,7 @@ require("lualine").setup({
         lualine_c = {
             require("auto-session.lib").current_session_name,
             function()
-                if #vim.lsp.buf_get_clients() > 0 then
+                if #vim.lsp.get_clients() > 0 then
                     return require("lsp-status").status()
                 end
 

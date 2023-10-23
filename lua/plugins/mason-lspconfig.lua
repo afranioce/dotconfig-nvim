@@ -16,6 +16,7 @@ mason_lspconfig.setup({
         "bashls",
         "cmake",
         "dockerls",
+        "cssls",
         "eslint",
         "gopls",
         "jsonls",
@@ -29,6 +30,9 @@ mason_lspconfig.setup({
         "sqlls",
         "vimls",
         "zk",
+        "helm_ls",
+        "stylelint_lsp",
+        "lemminx",
     },
 })
 
@@ -44,14 +48,12 @@ vim.api.nvim_create_autocmd("User", {
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
         vim.keymap.set("n", "<space>q", function()
-            telescope_builtin.diagnostics()
+            telescope_builtin.diagnostics({ severity_bound = "ERROR" })
         end, opts)
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "gi", function()
-            telescope_builtin.lsp_implementations()
-        end, opts)
+        vim.keymap.set("n", "gi", telescope_builtin.lsp_implementations, opts)
         vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
         vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
         vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
@@ -62,15 +64,9 @@ vim.api.nvim_create_autocmd("User", {
         vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
         -- vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-        vim.keymap.set("n", "gr", function()
-            telescope_builtin.lsp_references()
-        end, opts)
-        vim.keymap.set("n", "ge", function()
-            telescope_builtin.lsp_document_symbols()
-        end, opts)
-        vim.keymap.set("n", "gw", function()
-            telescope_builtin.lsp_workspace_symbols()
-        end, opts)
+        vim.keymap.set("n", "gr", telescope_builtin.lsp_references, opts)
+        vim.keymap.set("n", "ge", telescope_builtin.lsp_document_symbols, opts)
+        vim.keymap.set("n", "gw", telescope_builtin.lsp_workspace_symbols, opts)
         vim.keymap.set("n", "<space>f", vim.lsp.buf.format, opts)
     end,
 })
@@ -287,6 +283,39 @@ mason_lspconfig.setup_handlers({
     ["powershell_es"] = function()
         lspconfig.powershell_es.setup({
             shell = "pwsh.exe",
+        })
+    end,
+    ["jsonls"] = function()
+        lspconfig.jsonls.setup({
+            settings = {
+                json = {
+                    schemas = require("schemastore").json.schemas(),
+                    validate = { enable = true },
+                },
+            },
+            setup = {
+                commands = {
+                    Format = {
+                        function()
+                            vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line("$"), 0 })
+                        end,
+                    },
+                },
+            },
+        })
+    end,
+    ["yamlls"] = function()
+        lspconfig.yamlls.setup({
+            settings = {
+                yaml = {
+                    schemaStore = {
+                        -- You must disable built-in schemaStore support if you want to use
+                        -- this plugin and its advanced options like `ignore`.
+                        enable = false,
+                    },
+                    schemas = require("schemastore").yaml.schemas(),
+                },
+            },
         })
     end,
 })
