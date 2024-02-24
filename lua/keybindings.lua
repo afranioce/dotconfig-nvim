@@ -13,8 +13,8 @@ map("n", "<A-k>", "<C-w>k", opts)
 map("n", "<A-l>", "<C-w>l", opts)
 
 -- Close buffer
-map("n", "<leader>c", ":bp<bar>sp<bar>bn<bar>bd<CR>", opts)
-map("n", "<leader>C", ":bp<bar>sp<bar>bn<bar>bd!<CR>", opts) -- Force close
+map("n", "<leader>c", ":b#<bar>bd#<CR>", opts)
+map("n", "<leader>C", ":b#<bar>bd!#<CR>", opts) -- Force close
 
 -- Clean search (highlight)
 map("n", "<leader><space>", ":noh<CR>", opts)

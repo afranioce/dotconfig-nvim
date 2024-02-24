@@ -40,6 +40,8 @@ vim.o.incsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- vim.o.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+
 vim.o.guifont = "UbuntuMono Nerd Font 11"
 -- File encoding
 vim.o.encoding = "utf-8"
