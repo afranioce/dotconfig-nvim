@@ -53,7 +53,9 @@ end
 
 ufo.setup({
 	fold_virt_text_handler = handler,
-	close_fold_kinds = { "imports", "comment" },
+	close_fold_kinds_for_ft = {
+		default = { "imports", "comment" },
+	},
 	preview = {
 		win_config = {
 			border = { "", "─", "", "", "", "─", "", "" },
